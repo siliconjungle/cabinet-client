@@ -1,6 +1,11 @@
 {
   "presets": [
-    "@babel/react",
     "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "transform-react-jsx",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-runtime"
   ]
 }

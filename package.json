@@ -1,36 +1,43 @@
 {
   "name": "@silicon-jungle/cabinets-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A react wrapper for cabinets",
-  "main": "index.js",
+  "main": "build/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/siliconjungle/cabinet-client"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --mode production",
+    "watch": "webpack --watch --mode development"
   },
+  "files": [
+    "build"
+  ],
   "author": "James Addison",
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.8",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "css-loader": "^6.7.1",
-    "path": "^0.12.7",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "style-loader": "^3.3.1",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
+    "react-dom": "^18.0.0"
   },
   "dependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
     "@silicon-jungle/cabinet": "^2.4.6",
-    "babel-loader": "^8.2.4"
+    "babel-loader": "^8.2.4",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "eslint": "^8.12.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
   }
 }
