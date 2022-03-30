@@ -7,7 +7,7 @@ module.exports = {
     filename: 'index.js',
     library: 'index',
     globalObject: "this",
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'umd'
   },
   externals: {
     react: 'commonjs react',

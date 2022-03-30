@@ -1,8 +1,8 @@
 {
   "name": "@silicon-jungle/cabinets-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A react wrapper for cabinets",
-  "main": "build/index.js",
+  "main": "./build/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
