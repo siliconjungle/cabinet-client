@@ -31,6 +31,8 @@ const Page = ({ route }) => {
 })
 ```
 
+Contact me if you'd like an API key.
+
 ## License
 MIT License
 
