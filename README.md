@@ -8,6 +8,12 @@ const client = new CabinetClient({
   cabinet: Space.getCabinet(CABINET_KEY),
   accessToken: ACCESS_TOKEN,
 })
+
+const MyApp = ({ Component, pageProps }) => (
+  <CabinetProvider client={client}>
+    <Component {...pageProps} />
+  </CabinetProvider>
+)
 ```
 
 In whichever page or component you'd like to add collaborative content.
