@@ -1,11 +1,11 @@
 In _app.js
 
 ```
-import { CabinetProvider, CabinetClient, space } from '@silicon-jugnel/cabinet-client'
+import { CabinetProvider, CabinetClient, space } from '@silicon-jungle/cabinets-client'
 
 const client = new CabinetClient({
   uri: SOCKET_URL,
-  cabinet: Space.getCabinet(CABINET_KEY),
+  cabinet: space.getCabinet(CABINET_KEY),
   accessToken: ACCESS_TOKEN,
 })
 
@@ -19,19 +19,19 @@ const MyApp = ({ Component, pageProps }) => (
 In whichever page or component you'd like to add collaborative content.
 
 ```
-import { useShelf } from '@silicon-jungle/cabinet-client'
+import { useShelf } from '@silicon-jungle/cabinets-client'
 
 const Page = ({ route }) => {
   const [value, setValue] = useShelf(`/${route}`)
     
-  const handlePress = () => {
+  const handleClick = () => {
     setValue(new Date().toString())
   }
     
   return (
     <div>
-      {JSON.stringify(value)}
-      <button onPress={handlePress}>Click me</button>
+      <p>{JSON.stringify(value)}</p>
+      <button onClick={handleClick}>Click me</button>
     </div>
   )
 })
