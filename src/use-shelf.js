@@ -1,12 +1,13 @@
 import { useContext, useState, useCallback, useEffect } from 'react'
-import CabinetContext from './cabinet-context.js'
+import CabinetContext from './cabinet-context'
+import space from './space-singleton'
 
-const useShelf = (key) => {
+const useShelf = (cabinet, key) => {
   const [value, setInnerValue] = useState(null)
 
   const {
     client,
-    cabinet,
+    // cabinet,
     addSubscription,
     removeSubscription,
   } = useContext(CabinetContext)
@@ -15,29 +16,30 @@ const useShelf = (key) => {
     if (JSON.stringify(shelf.value) !== JSON.stringify(value)) {
       setInnerValue(shelf.value)
     }
-  }, [key])
+  }, [cabinet, key])
 
   const setValue = useCallback(value => {
-    cabinet.setState(key, value).then((patches) => {
+    const currentCabinet = space.getCabinet(cabinet)
+    currentCabinet.setState(key, value).then((patches) => {
       client.sendMessage({
         accessToken: client.accessToken,
         type: 'set',
         data: {
-          cabinet: cabinet.name,
+          cabinet,
           key,
           patches,
         },
       })
     })
-  }, [key, cabinet, client])
+  }, [cabinet, key, client])
 
   useEffect(() => {
-    addSubscription(key, callback)
+    addSubscription(cabinet, key, callback)
 
     return () => {
-      removeSubscription(key, callback)
+      removeSubscription(cabinet, key, callback)
     }
-  }, [key, callback])
+  }, [cabinet, key, callback])
 
   return [
     value,

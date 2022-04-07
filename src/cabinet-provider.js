@@ -1,27 +1,31 @@
 import React, { useCallback } from 'react'
 import CabinetContext from './cabinet-context'
+import space from './space-singleton'
 
 // accessToken
 const CabinetProvider = ({ client, children }) => {
-  const addSubscription = useCallback((key, callback) => {
-    client?.cabinet.getShelf(key).then(shelf => {
+  const addSubscription = useCallback((cabinet, key, callback) => {
+    // Update this to include the "cabinet"
+    const currentCabinet = space.getCabinet(cabinet)
+    currentCabinet.getShelf(key).then(shelf => {
       // if (client.cabinet.getSubscriptionCount(key) === 0) {
-      client.subscribe(key, shelf.history)
+      client.subscribe(cabinet, key, shelf.history)
       // }
-      client.cabinet.addSubscription(key, callback)
+      currentCabinet.addSubscription(key, callback)
     })
   }, [client])
 
-  const removeSubscription = useCallback((key, callback) => {
-    client?.cabinet.removeSubscription(key, callback)
+  const removeSubscription = useCallback((cabinet, key, callback) => {
+    const currentCabinet = space.getCabinet(cabinet)
+    currentCabinet.removeSubscription(key, callback)
     // if (client?.cabinet.getSubscriptionCount(key) > 0) {
-    client?.unsubscribe(key)
+    client?.unsubscribe(cabinet, key)
     // }
   }, [client])
 
   const value = {
     client,
-    cabinet: client?.cabinet,
+    // cabinet: client?.cabinet,
     addSubscription,
     removeSubscription,
   }

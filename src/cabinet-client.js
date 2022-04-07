@@ -1,11 +1,13 @@
 import { setUsersByKey, clearStore } from './users-store'
+import space from './space-singleton'
 
 const isBrowser = typeof window !== 'undefined'
 
+// Stop injecting the cabinet in as an option, instead for every call also hand in a cabinet.
 function CabinetClient (options) {
   this.messages = []
   this.connection = null
-  this.cabinet = options.cabinet
+  // this.cabinet = options.cabinet
   this.accessToken = options.accessToken
 
   this.onmessage = event => {
@@ -13,9 +15,10 @@ function CabinetClient (options) {
 
     const { type, data } = message
     if (type === 'get') {
-      const { key, patches, users } = data
-      setUsersByKey(key, users)
-      this.cabinet.applyOps(key, patches)
+      const { cabinet, key, patches, users } = data
+      setUsersByKey(cabinet, key, users)
+      const currentCabinet = space.getCabinet(cabinet)
+      currentCabinet.applyOps(key, patches)
     }
   }
 
@@ -51,7 +54,7 @@ function CabinetClient (options) {
       // If a lot of changes happen all offline, this will cause an explosion of updates to all be sent.
       // Merge messages together
       if (message.type === 'set') {
-        const existingMessage = this.messages.find(message2 => message.data.key === message2.data.key)
+        const existingMessage = this.messages.find(message2 => message.data.cabinet === message2.data.cabinet && message.data.key === message2.data.key)
         if (existingMessage) {
           existingMessage.data.patches.push(message.data.patches)
           return
@@ -61,19 +64,19 @@ function CabinetClient (options) {
     }
   }
 
-  this.subscribe = (key, patches) => {
+  this.subscribe = (cabinet, key, patches) => {
     this.sendMessage({
       type: 'subscribe',
       accessToken: this.accessToken,
-      data: { cabinet: this.cabinet.name, key, patches },
+      data: { cabinet, key, patches },
     })
   }
 
-  this.unsubscribe = key => {
+  this.unsubscribe = (cabinet, key) => {
     this.sendMessage({
       type: 'unsubscribe',
       accessToken: this.accessToken,
-      data: { cabinet: this.cabinet.name, key },
+      data: { cabinet, key },
     })
   }
 
