@@ -3,11 +3,9 @@ import space from './space-singleton'
 
 const isBrowser = typeof window !== 'undefined'
 
-// Stop injecting the cabinet in as an option, instead for every call also hand in a cabinet.
 function CabinetClient (options) {
   this.messages = []
   this.connection = null
-  // this.cabinet = options.cabinet
   this.accessToken = options.accessToken
 
   this.onmessage = event => {

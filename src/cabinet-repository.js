@@ -6,7 +6,7 @@ const getShelfByKey = async (cabinet, key) => {
   if (typeof window === 'undefined') {
     return null
   }
-  const storedValue = window.localStorage.getItem(`${cabinet}${key}`)
+  const storedValue = localStorage.getItem(`${cabinet}${key}`)
   return storedValue && JSON.parse(storedValue) || null
 }
 

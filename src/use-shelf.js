@@ -2,6 +2,9 @@ import { useContext, useState, useCallback, useEffect } from 'react'
 import CabinetContext from './cabinet-context'
 import space from './space-singleton'
 
+const validate = key =>
+  key !== null && key !== undefined && key !== '/' && key !== ''
+
 const useShelf = (cabinet, key) => {
   const [value, setInnerValue] = useState(null)
 
@@ -19,6 +22,9 @@ const useShelf = (cabinet, key) => {
   }, [cabinet, key])
 
   const setValue = useCallback(value => {
+    if (!validate(cabinet) || !validate(key)) {
+      return
+    }
     const currentCabinet = space.getCabinet(cabinet)
     currentCabinet.setState(key, value).then((patches) => {
       client.sendMessage({
@@ -34,10 +40,14 @@ const useShelf = (cabinet, key) => {
   }, [cabinet, key, client])
 
   useEffect(() => {
-    addSubscription(cabinet, key, callback)
+    if (validate(cabinet) && validate(key)) {
+      addSubscription(cabinet, key, callback)
+    }
 
     return () => {
-      removeSubscription(cabinet, key, callback)
+      if (validate(cabinet) && validate(key)) {
+        removeSubscription(cabinet, key, callback)
+      }
     }
   }, [cabinet, key, callback])
 
